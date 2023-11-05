@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from .models import RessourceNode, RessourceType, Map
+from .models import RessourceNode, Ressource, Map, RessourceCategory
 from rest_framework import serializers
 
 
@@ -17,12 +17,17 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class RessourceNodeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = RessourceNode
-        fields = ['id', 'x', 'y', 'ressource_type', 'map']
+        fields = ['id', 'x', 'y', 'ressource', 'map']
 
-class RessourceTypeSerializer(serializers.HyperlinkedModelSerializer):
+class RessourceCategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = RessourceType
-        fields = ['id', 'name', 'icon']
+        model = RessourceCategory
+        fields = ['id', 'name']
+
+class RessourceSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Ressource
+        fields = ['id', 'name', 'icon', 'description', 'ressource_category']
 
 class MapSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

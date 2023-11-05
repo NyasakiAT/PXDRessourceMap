@@ -8,8 +8,8 @@
 @font-face {
     font-family: "Roboto";
     src: url('../fonts/Roboto/Roboto-Regular.ttf') format('truetype'),
-    url('../fonts/Roboto/Roboto-Bold.ttf') format('truetype');
-  }
+        url('../fonts/Roboto/Roboto-Bold.ttf') format('truetype');
+}
 
 html,
 body {
@@ -20,19 +20,12 @@ body {
     font-family: "Roboto";
 }
 
-select{
-    padding: 5px;
-    border: none;
-    background-color: var(--red);
-    color: var(--white);
+.control{
+    width: 100%;
 }
 
-nav {
-    background-color: var(--brown-grey);
-    display: flex;
-    height: 4rem;
-    gap: 2rem;
-    justify-content: center;
+h3 .label {
+    text-align: center;
 }
 
 nav a {
@@ -40,11 +33,62 @@ nav a {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     font-size: 18px;
 }
 
-.container {
+nav a:visited {
+    color: var(--white);
+}
+
+nav a:hover {
+    color: var(--white);
+    text-decoration: none;
+}
+
+.nav {
+    padding: 0px 2rem;
+    margin: 0px;
+    background-color: var(--brown-grey);
+    display: flex;
+    height: 4rem;
+    gap: 2rem;
+    flex-direction: row;
+}
+
+.spacer-h {
+    flex: 1;
+}
+
+.spacer-v {
+    flex: 1;
+}
+
+.login-form {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: var(--white);
+
+    flex-direction: column;
+    max-width: 30%;
+    min-width: 200px;
+    gap: 0.3rem;
+
+    padding: 20px;
+
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-form p {
+    margin-top: auto;
+    margin-bottom: 0px;
+}
+
+.content {
     display: flex;
     width: 100%;
     height: 100%;
@@ -58,10 +102,23 @@ nav a {
     flex-grow: 8;
 }
 
+.wiki-list {
+    flex-direction: column;
+    display: flex;
+    gap: 1rem;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.wiki-list h2{
+    margin: 0px;
+    border-bottom: solid 1px var(--brown-grey) ;
+}
+
 .map-controls {
     flex-direction: column;
     display: flex;
-    gap:1rem;
+    gap: 1rem;
     height: 100%;
     flex-grow: 1;
 }
@@ -75,66 +132,32 @@ nav a {
 .wrapper {
     display: flex;
     flex-direction: row;
-    height: 90%;
+    height: 95%;
     gap: 2rem;
     padding-left: 2rem;
     padding-right: 2rem;
 }
 
+#pos-label{
+    text-align: center;
+}
+
 footer {
     background-color: var(--brown-grey);
     display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    height: 10%;
+    height: 5%;
     gap: 2rem;
 }
 
-.footer-column {
+footer p {
+    color: var(--white);
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    align-items: center;
+    margin: 0px;
 }
 
-.footer-link {
-    color: var(--white);
-    font-weight: bold;
-    font-size: 1rem;
-    text-decoration: none;
-}
-
-.footer-link:visited {
-    color: var(--white);
-    font-weight: bold;
-    font-size: 1rem;
-}
-
-/* DEV STUFF */
-
-.palette {
+#admin-controls {
     display: none;
-}
-
-.testdiv {
-    width: 100px;
-    height: 100px;
-    border: solid black 1px;
-    display: inline-block;
-}
-
-.c1 {
-    background-color: var(--brown-grey);
-}
-
-.c2 {
-    background-color: var(--gold);
-}
-
-.c3 {
-    background-color: var(--red);
-}
-
-.c4 {
-    background-color: var(--white);
 }

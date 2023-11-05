@@ -3,50 +3,60 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Ressource Map</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-
-  <div class="palette">
-    <div class="testdiv c1"></div>
-    <div class="testdiv c2"></div>
-    <div class="testdiv c3"></div>
-    <div class="testdiv c4"></div>
-  </div>
-
-  <div class="container">
-    <nav>
-      <a>Home</a>
-      <a>About</a>
-      <a>Contact</a>
+  <div class="content">
+    <nav class="nav">
+      <a class="nav-item" href="index.html">Home</a>
+      <a class="nav-item" href="wiki.html">Wiki</a>
+      <a class="nav-item" href="about.html">About</a>
+      <a class="spacer-h"></a>
+      <a class="nav-item" id="login-link">Login</a>
     </nav>
+    <div class="login-form" id="login-overlay">
+      <input class="form-input" type="text" placeholder="username" id="username-input">
+      <input class="form-input" type="password" placeholder="password" id="password-input">
+      <button class="btn btn-success" id="login-btn">Login</button>
+      <button class="btn btn-error" id="close-btn">Close</button>
+      <p>Thanks for contributing to my project ❤️</p>
+    </div>
     <div class="wrapper">
       <div class="map-container">
         <div id="map"></div>
       </div>
       <div class="map-controls">
-        <select class="form-select" aria-label="Map" name="maps" id="maps"></select>
-        <select class="form-select" aria-label="Ressource" name="ressources" id="ressources">
+        <select class="select form-select" aria-label="Map" name="maps" id="maps"></select>
+        <select class="select form-select" aria-label="Ressource" name="ressources" id="ressources">
           <option value="">all</option>
         </select>
+      <div class="spacer-h"></div>
+        <div id="admin-controls">
+          <h3><span class="label label-warning control">Admin Controls</span></h3>
+          <p class="control" id="pos-label">(0,0)</p>
+          <button class="btn control" id="btn-add">Add</button>
+        </div>
       </div>
     </div>
 
     <footer>
-      <div class="footer-column"></div>
-      <div class="footer-column"></div>
-      <div class="footer-column"><a class="footer-link" href="./login.html">Login</a></div>
+      <p>Made with ❤️ by Nyasaki</p>
     </footer>
   </div>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="js/auth.js"></script>
   <script src="js/script.js"></script>
 </body>
 

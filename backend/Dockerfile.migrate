@@ -13,5 +13,5 @@ RUN python -m pip install -r requirements.txt
 # Copy your project files
 COPY . /backend/
 
-# Run migrations
-CMD ["python", "manage.py", "migrate"]
+# Run migrations using a shell
+CMD ["sh", "-c", "python manage.py makemigrations && python manage.py migrate"]

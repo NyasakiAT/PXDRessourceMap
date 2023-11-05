@@ -1,3 +1,17 @@
+function openPopup() {
+    var overlay = document.getElementById("login-overlay");
+    overlay.style.display = "flex";
+}
+
+function closePopup() {
+    var overlay = document.getElementById("login-overlay");
+    overlay.style.display = "none";
+}
+
+document.getElementById("close-btn").addEventListener("click", function () {
+    closePopup();
+});
+
 document.getElementById("login-btn").addEventListener("click", function () {
     console.log("AUTH");
 
@@ -17,23 +31,23 @@ document.getElementById("login-btn").addEventListener("click", function () {
         },
         body: JSON.stringify(credentials),
     })
-    .then((response) => {
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
-        return response.json();
-    })
-    .then((json) => {
-        console.log(json);
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then((json) => {
+            console.log(json);
 
-        // Assuming the token is received in the JSON response, you can create a cookie
-        const authToken = json.token;
-        document.cookie = `auth_token=${authToken}; path=/;`;
+            // Assuming the token is received in the JSON response, you can create a cookie
+            const authToken = json.token;
+            document.cookie = `auth_token=${authToken}; path=/;`;
 
-        // Redirect back to the index page (you can change the URL as needed)
-        window.location.href = "index.html";
-    })
-    .catch((error) => {
-        console.error("Fetch error:", error);
-    });
+            checkAuthStatus();
+            closePopup();
+        })
+        .catch((error) => {
+            console.error("Fetch error:", error);
+        });
 });

@@ -1,5 +1,5 @@
 const map_url = 'http://127.0.0.1:8000/api/maps/';
-const res_type_url = 'http://127.0.0.1:8000/api/ressource-types/';
+const res_type_url = 'http://127.0.0.1:8000/api/ressources/';
 const ressources_url = 'http://127.0.0.1:8000/api/maps/<map_id>/nodes/';
 
 window.L_DISABLE_3D = true;
@@ -11,11 +11,60 @@ const map = L.map('map', {
 });
 
 const map_markers = [];
-
+let selected_pos = [];
 const map_select = document.getElementById("maps");
 const ressource_select = document.getElementById("ressources");
 
+const addButton = document.getElementById("btn-add")
+
+addButton.addEventListener('click', function () {
+  const mapSelectValue = map_select.value; // Get the selected map ID
+  const ressourceSelectValue = ressource_select.value; // Get the selected ressource type ID
+  const token = getCookie('auth_token'); // Replace 'auth_token' with the actual cookie name
+
+  if (!mapSelectValue || !ressourceSelectValue) {
+    alert('Please select a map and a ressource before adding.'); // Provide a message to the user if a map or ressource is not selected
+    return;
+  }
+
+  // Define the data you want to send in the POST request
+  console.log(selected_pos)
+  console.log(ressourceSelectValue)
+  const postData = {
+    x: selected_pos[0], // Set your desired x-coordinate value
+    y: selected_pos[1], // Set your desired y-coordinate value
+    ressource: `http://127.0.0.1:8000/api/ressources/${ressourceSelectValue}/`, // Use the selected ressource type ID
+    map: `http://127.0.0.1:8000/api/maps/${mapSelectValue}/`,
+  };
+
+  fetch('http://127.0.0.1:8000/api/ressource-nodes/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Token ${token}`,
+    },
+    body: JSON.stringify(postData), // Convert the data to a JSON string
+  })
+    .then((response) => {
+      if (response.status === 201) {
+        draw_map(map_select.value, ressource_select.value);
+      } else {
+        alert('Failed to add ressource. Please try again.'); // Provide an error message to the user
+      }
+    })
+    .catch((error) => {
+      console.error('Fetch error:', error);
+      alert('An error occurred while adding the ressource.'); // Provide an error message to the user
+    });
+});
+
 window.onload = function () {
+  const loginLink = document.getElementById('login-link');
+
+  loginLink.addEventListener('click', function (event) {
+    openPopup()
+  });
+
   map_select.addEventListener('change', function () {
     draw_map(map_select.value, ressource_select.value);
   });
@@ -27,6 +76,38 @@ window.onload = function () {
   populate_ressource_dropdown(ressource_select);
 };
 
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+function checkAuthStatus() {
+  const token = getCookie('auth_token'); // Replace 'auth_token' with the actual cookie name
+
+  // Make an API request to check the user's authorization
+  return fetch('http://127.0.0.1:8000/api/auth/isauthenticated', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Token ${token}`,
+    },
+  })
+    .then((response) => {
+      if (response.status === 200) {
+        document.getElementById('admin-controls').style.display = "block";
+        return true; // User is authorized
+      } else if (response.status === 401) {
+        return false; // User is not authorized
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .catch((error) => {
+      console.error('Fetch error:', error);
+      return false; // An error occurred, consider the user not authorized
+    });
+}
+
 function populate_maps_dropdown(select) {
   fetch(map_url)
     .then((response) => {
@@ -36,7 +117,8 @@ function populate_maps_dropdown(select) {
       return response.json();
     })
     .then((data) => {
-      data.results.forEach(map => {
+      console.log(data)
+      data.forEach(map => {
         const optionElement = document.createElement('option');
         optionElement.value = map.id;
         optionElement.text = map.name;
@@ -57,7 +139,7 @@ function populate_ressource_dropdown(select) {
       return response.json();
     })
     .then((data) => {
-      data.results.forEach(map => {
+      data.forEach(map => {
         const optionElement = document.createElement('option');
         optionElement.value = map.id;
         optionElement.text = map.name;
@@ -89,6 +171,9 @@ function draw_map(map_index, type_index = null) {
 
         map.on('click', function (e) {
           console.log(e.latlng.lng, imageHeight - e.latlng.lat);
+          var label = document.getElementById("pos-label")
+          selected_pos = [Math.floor(e.latlng.lng), Math.floor(imageHeight - e.latlng.lat)]
+          label.innerText = `(${Math.floor(e.latlng.lng)}, ${Math.floor(imageHeight - e.latlng.lat)})`
         });
 
         map_markers.forEach(marker => map.removeLayer(marker));
@@ -108,8 +193,8 @@ function draw_map(map_index, type_index = null) {
             return response.json();
           })
           .then((data) => {
-            data.results.forEach(ressource_node => {
-              fetch(ressource_node.ressource_type)
+            data.forEach(ressource_node => {
+              fetch(ressource_node.ressource)
                 .then((response) => {
                   if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -129,12 +214,12 @@ function draw_map(map_index, type_index = null) {
                       iconUrl: icon,
 
                       iconSize: [iconWidth, iconHeight], // size of the icon
-                      iconAnchor: [iconWidth/2, iconHeight/2], // point of the icon which will correspond to marker's location
+                      iconAnchor: [iconWidth / 2, iconHeight / 2], // point of the icon which will correspond to marker's location
                       popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                     });
 
                     const marker_pos = L.latLng([imageHeight - ressource_node.y, ressource_node.x]);
-                    const marker = L.marker(marker_pos, {icon: ressource_icon}).addTo(map).bindPopup(name);
+                    const marker = L.marker(marker_pos, { icon: ressource_icon }).addTo(map).bindPopup(name);
                     map_markers.push(marker);
                   }
                 })
