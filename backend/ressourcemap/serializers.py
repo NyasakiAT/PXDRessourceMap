@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from .models import RessourceNode, Ressource, Map, RessourceCategory, Recipe, RecipeIngredient
+from .models import RessourceNode, Ressource, Map, RessourceCategory, Recipe, RecipeIngredient, CraftingStation
 from rest_framework import serializers
 
 
@@ -19,29 +19,17 @@ class RessourceNodeSerializer(serializers.ModelSerializer):
         model = RessourceNode
         fields = ['id', 'x', 'y', 'ressource', 'map']
 
-class RessourceSerializer(serializers.ModelSerializer):
+class CraftingStationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Ressource
-        fields = ['id', 'name', 'icon', 'image', 'description', 'obtained_from', 'ressource_category', 'used_in']
-
-class RessourceCategorySerializer(serializers.ModelSerializer):
-    ressources = RessourceSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = RessourceCategory
-        fields = ['id', 'name', 'ressources']
-
-class MapSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Map
-        fields = ['id', 'name', 'image']
+        model = CraftingStation
+        fields = ['id', 'name']  # Add other fields as needed
 
 class RecipeSerializer(serializers.ModelSerializer):
-    ingredients = serializers.SerializerMethodField()
+    crafting_station = CraftingStationSerializer()  # Include the crafting station serializer
 
     class Meta:
         model = Recipe
-        fields = ['id', 'name', 'processing_time', 'ingredients', 'amount_crafted']
+        fields = ['id', 'name', 'processing_time', 'amount_crafted', 'crafting_station']
 
     def get_ingredients(self, obj):
         # Retrieve the RecipeIngredients related to this recipe
@@ -58,7 +46,35 @@ class RecipeSerializer(serializers.ModelSerializer):
 
         return serialized_ingredients
 
+    def to_representation(self, instance):
+        # Override the to_representation method to include ingredients
+        representation = super().to_representation(instance)
+        representation['ingredients'] = self.get_ingredients(instance)
+        return representation
+
+class RessourceSerializer(serializers.ModelSerializer):
+    used_in = RecipeSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Ressource
+        fields = ['id', 'name', 'icon', 'image', 'description', 'obtained_from', 'ressource_category', 'used_in']
+
 class RecipeIngredientSerializer(serializers.ModelSerializer):
+    ingredient = RessourceSerializer()  # Use the correct attribute name 'ingredient'
+
     class Meta:
         model = RecipeIngredient
-        fields = ['id', 'resource', 'amount']
+        fields = ['id', 'ingredient', 'amount']
+
+class RessourceCategorySerializer(serializers.ModelSerializer):
+    ressources = RessourceSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = RessourceCategory
+        fields = ['id', 'name', 'ressources']
+
+class MapSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Map
+        fields = ['id', 'name', 'image']
+

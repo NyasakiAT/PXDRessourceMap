@@ -13,6 +13,7 @@ router.register(r'ressources', views.RessourceViewSet)
 router.register(r'ressource-nodes', views.RessourceNodeViewSet)
 router.register(r'recipe', views.RecipeViewSet)
 router.register(r'recipe-ingredients', views.RecipeIngredientViewSet)
+router.register(r'crafting-station', views.CraftingStationViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

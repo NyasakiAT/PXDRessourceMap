@@ -1,12 +1,12 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import RessourceNode, Map, Ressource, RessourceCategory, Recipe, RecipeIngredient
+from .models import RessourceNode, Map, Ressource, RessourceCategory, Recipe, RecipeIngredient, CraftingStation
 from rest_framework import status
 from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework import permissions
-from ressourcemap.serializers import UserSerializer, GroupSerializer, RessourceNodeSerializer, MapSerializer, RessourceCategorySerializer, RessourceSerializer, RecipeSerializer, RecipeIngredientSerializer
+from ressourcemap.serializers import UserSerializer, GroupSerializer, RessourceNodeSerializer, MapSerializer, RessourceCategorySerializer, RessourceSerializer, RecipeSerializer, RecipeIngredientSerializer, CraftingStationSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
@@ -55,6 +55,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
 class RecipeIngredientViewSet(viewsets.ModelViewSet):
     queryset = RecipeIngredient.objects.all()
     serializer_class = RecipeIngredientSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class CraftingStationViewSet(viewsets.ModelViewSet):
+    queryset = CraftingStation.objects.all()
+    serializer_class = CraftingStationSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 class RessourceNodesByMapView(generics.ListAPIView):

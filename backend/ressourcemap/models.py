@@ -35,12 +35,19 @@ class RessourceNode(models.Model):
     ressource = models.ForeignKey(Ressource, on_delete=models.CASCADE, related_name='ressourcenodes')
     map = models.ForeignKey(Map, on_delete=models.CASCADE, related_name='ressourcenodes')
 
-class Recipe(models.Model):
-    id = models.AutoField(primary_key=True)
+class CraftingStation(models.Model):
     name = models.CharField(max_length=60)
-    processing_time = models.PositiveIntegerField()  # Add the processing_time field
+    # Add any other fields you need for crafting stations
+
+    def __str__(self):
+        return self.name
+
+class Recipe(models.Model):
+    name = models.CharField(max_length=60)
+    processing_time = models.PositiveIntegerField()  # Processing time in seconds or minutes
+    crafting_station = models.ForeignKey(CraftingStation, on_delete=models.CASCADE, null=True,  blank=True)
     ingredients = models.ManyToManyField(Ressource, through='RecipeIngredient', related_name="used_in")
-    amount_crafted = models.PositiveIntegerField(default=1)  # Add the amount_crafted field
+    amount_crafted = models.PositiveIntegerField()
 
     def __str__(self):
         return self.name
@@ -49,3 +56,6 @@ class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     resource = models.ForeignKey(Ressource, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.resource.name} in {self.recipe.name}"
