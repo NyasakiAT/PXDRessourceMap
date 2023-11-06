@@ -11,6 +11,8 @@ router.register(r'maps', views.MapViewSet)
 router.register(r'ressource-categories', views.RessourceCategoryViewSet)
 router.register(r'ressources', views.RessourceViewSet)
 router.register(r'ressource-nodes', views.RessourceNodeViewSet)
+router.register(r'recipe', views.RecipeViewSet)
+router.register(r'recipe-ingredients', views.RecipeIngredientViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

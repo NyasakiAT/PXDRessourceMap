@@ -18,7 +18,7 @@ function Ressources() {
         .then((data) => {
             console.log(data)
             data.forEach(element => {
-                document.getElementById("wiki-ressources").innerHTML += `<a>${element.name}</a>`;
+                document.getElementById("wiki-ressources").innerHTML += `<a href=detail.html?type=ressource&id=${element.id}>${element.name}</a>`;
             });
         });
 }
@@ -34,7 +34,7 @@ function RessourceCategories() {
         .then((data) => {
             console.log(data)
             data.forEach(element => {
-                document.getElementById("wiki-categories").innerHTML += `<a>${element.name}</a>`;
+                document.getElementById("wiki-categories").innerHTML += `<a href=detail.html?type=category&id=${element.id}>${element.name}</a>`;
             });
         });
 }

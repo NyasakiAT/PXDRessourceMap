@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import Map, Ressource, RessourceCategory, RessourceNode
+from .models import Map, Ressource, RessourceCategory, RessourceNode, Recipe, RecipeIngredient
+
+class RecipeIngredientInline(admin.TabularInline):
+    model = RecipeIngredient
+    extra = 1  # The number of empty forms to display for adding new ingredients
+
+class RecipeAdmin(admin.ModelAdmin):
+    inlines = [RecipeIngredientInline]
 
 class CustomModelAdmin(admin.ModelAdmin):
     # Customize foreign key representation
@@ -17,3 +24,5 @@ admin.site.register(Map, CustomModelAdmin)
 admin.site.register(Ressource, CustomModelAdmin)
 admin.site.register(RessourceCategory, CustomModelAdmin)
 admin.site.register(RessourceNode, CustomModelAdmin)
+admin.site.register(Recipe, RecipeAdmin)
+admin.site.register(RecipeIngredient, CustomModelAdmin)
