@@ -9,22 +9,43 @@ console.log("Type:" + type);
 const categoryUrl = "http://127.0.0.1:8000/api/ressource-categories/"
 const ressourceUrl = "http://127.0.0.1:8000/api/ressources/"
 
+function AddIngredient(ingredient){
+    return `<tr><td>${ingredient.amount}</td><td>${ingredient.ingredient.name}</td></tr>`
+}
 
+function AddRecipe(rec){
+    return `
+        <h4>${rec.name}</h4>
+        <table class="table">
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Ressource</th>
+            </tr>
+        </thead>
+        ${rec.ingredients.map(ingredient => AddIngredient(ingredient)).join('')}
+        </table>
+        <p><span>Crafted In: </span>${rec.crafting_station.name}</p>`
+}
 
 function AddRessourceDetails(ress) {
     document.getElementById("detail-container").innerHTML += `
-    <div class="tile tile-centered">
-        <div class="tile-icon">
-            <div class="example-tile-icon">
-                <img class="icon icon-file centered" src=${ress.icon}></img>
-            </div>
-        </div>
-        <div class="tile-content">
-            <div class="tile-title">${ress.name}</div>
-            <small class="tile-subtitle text-gray">${ress.description}</small>
+    <div class="item-header">
+        <img style="width: 100px; height: 100px;" src=${ress.image}></img>
+        <div class="item-title">
+            <h2>${ress.name}</h2>
+            <p>${ress.description}</p>
         </div>
     </div>
-    `;
+    <div class="item-body">
+        <p class="item-data"><span>Stack Size: </span>${ress.stack_size}</p>
+        <p class="item-data"><span>Category: </span>${ress.ressource_category.name}</p>
+        <p class="item-data"><span>Obtained From: </span>${ress.obtained_from}</p>
+    </div>
+    <div class="item-recipies">
+        <h3>Recipies</h3>
+        ${ress.used_in.map(element => AddRecipe(element)).join('')}
+    </div>`;
 }
 
 switch (type) {

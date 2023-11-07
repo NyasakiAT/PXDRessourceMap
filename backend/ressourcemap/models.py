@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms.models import model_to_dict
 
 class Map(models.Model):
     id = models.AutoField(primary_key=True)
@@ -14,19 +15,29 @@ class RessourceCategory(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def to_json(self):
+        # Use Django's model_to_dict to serialize RessourceCategory fields
+        category_dict = model_to_dict(self, fields=['id', 'name'])
+        # Use the related_name 'ressources' to access all related Ressource objects
+        category_dict['ressources'] = [ressource.to_json() for ressource in self.ressources.all()]
+        return category_dict
 
 class Ressource(models.Model):
-    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=60)
     icon = models.ImageField()
-    image = models.ImageField(null=True,  blank=True)
+    image = models.ImageField(null=True, blank=True)
     description = models.TextField()
-    obtained_from = models.TextField(null=True,  blank=True)
-    stack_size = models.IntegerField()
-    ressource_category = models.ForeignKey(RessourceCategory, on_delete=models.CASCADE, related_name="ressources")
+    obtained_from = models.TextField(null=True, blank=True)
+    stack_size = models.PositiveIntegerField()
+    ressource_category = models.ForeignKey('RessourceCategory', related_name='ressources', on_delete=models.CASCADE)
+    used_in = models.ManyToManyField('Recipe', through='RecipeIngredient')
 
     def __str__(self):
         return self.name
+    
+    def to_json(self):
+        return model_to_dict(self, fields=[field.name for field in self._meta.fields])
     
 class RessourceNode(models.Model):
     id = models.AutoField(primary_key=True)
@@ -44,18 +55,18 @@ class CraftingStation(models.Model):
 
 class Recipe(models.Model):
     name = models.CharField(max_length=60)
-    processing_time = models.PositiveIntegerField()  # Processing time in seconds or minutes
-    crafting_station = models.ForeignKey(CraftingStation, on_delete=models.CASCADE, null=True,  blank=True)
-    ingredients = models.ManyToManyField(Ressource, through='RecipeIngredient', related_name="used_in")
+    processing_time = models.PositiveIntegerField()
     amount_crafted = models.PositiveIntegerField()
+    crafting_station = models.ForeignKey(CraftingStation, on_delete=models.CASCADE)
+    output_ressource = models.ForeignKey(Ressource, on_delete=models.CASCADE, related_name='output_of_recipe')
 
     def __str__(self):
         return self.name
 
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    resource = models.ForeignKey(Ressource, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ressource, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.resource.name} in {self.recipe.name}"
+        return f"{self.ingredient.name} in {self.recipe.name}"

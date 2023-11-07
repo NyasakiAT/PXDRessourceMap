@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Map, Ressource, RessourceCategory, RessourceNode, Recipe, RecipeIngredient
+from .models import Map, Ressource, RessourceCategory, RessourceNode, Recipe, RecipeIngredient, CraftingStation
 
 class RecipeIngredientInline(admin.TabularInline):
     model = RecipeIngredient
@@ -26,3 +26,4 @@ admin.site.register(RessourceCategory, CustomModelAdmin)
 admin.site.register(RessourceNode, CustomModelAdmin)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(RecipeIngredient, CustomModelAdmin)
+admin.site.register(CraftingStation, CustomModelAdmin)

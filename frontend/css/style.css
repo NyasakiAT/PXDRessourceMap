@@ -11,6 +11,16 @@
         url('../fonts/Roboto/Roboto-Bold.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: "AlmendraSC";
+    src: url('../fonts/AlmaderaSC/AlmendraSC-Regular.ttf') format('truetype');
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'AlmendraSC', serif; /* Medieval style font for headers */
+    font-weight: bold;
+}
+
 html,
 body {
     height: 100%;
@@ -18,6 +28,34 @@ body {
     padding: 0px;
     box-sizing: border-box;
     font-family: "Roboto";
+}
+
+#detail-container{
+    margin: 0px 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.item-data{
+    margin: 0px;
+}
+
+.item-recipies table{
+    max-width: 500px;
+}
+
+.item-title{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    line-height: 100%;
+}
+
+.item-header{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
 }
 
 .control{
@@ -160,4 +198,141 @@ footer p {
 
 #admin-controls {
     display: none;
+}
+
+:root {
+    --brown-grey: #25221c;
+    --gold: #8e7747;
+    --red: #57161e;
+    --white: #e5e7eb;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url('../fonts/Roboto/Roboto-Regular.ttf') format('truetype'),
+        url('../fonts/Roboto/Roboto-Bold.ttf') format('truetype');
+}
+
+html, body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: "Roboto";
+    background-color: var(--brown-grey); /* Added background color */
+}
+
+/* Additional global styles */
+a, button {
+    transition: color 0.3s ease; /* Smooth transition for color changes */
+}
+
+/* Reusable utility classes */
+.text-gold {
+    color: var(--gold);
+}
+
+.bg-dark {
+    background-color: var(--brown-grey);
+}
+
+.bg-red {
+    background-color: var(--red);
+}
+
+.border-gold {
+    border-color: var(--gold);
+}
+
+/* Enhanced navigation styles */
+.nav {
+    padding: 0px 2rem;
+    margin: 0px;
+    background-color: var(--brown-grey);
+    display: flex;
+    height: 4rem;
+    gap: 2rem;
+    flex-direction: row;
+    /* Added box-shadow for depth */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+nav a {
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+}
+
+nav a:hover {
+    color: var(--gold);
+    text-decoration: none; /* Remove underline on hover */
+}
+
+/* Content styles */
+.content {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 1rem;
+    flex-direction: column;
+    background-color: var(--white);
+}
+
+/* Footer styles */
+footer {
+    background-color: var(--brown-grey);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 5%;
+    gap: 2rem;
+}
+
+footer p {
+    color: var(--white);
+    display: flex;
+    margin: 0px;
+}
+
+/* Table styles for recipes */
+.item-recipies table {
+    max-width: 500px;
+    /* Added border and text styles */
+    border: 1px solid var(--gold);
+    color: var(--brown-grey);
+}
+
+.item-recipies th,
+.item-recipies td {
+    padding: 8px; /* Added padding for table cells */
+}
+
+.item-recipies th {
+    background-color: var(--red); /* Thematic header background */
+    color: var(--white);
+}
+
+.item-recipies td {
+    background-color: var(--white); /* Clear background for cells */
+}
+
+/* Form styles for login */
+.login-form {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--white);
+    flex-direction: column;
+    max-width: 30%;
+    min-width: 200px;
+    gap: 0.3rem;
+    padding: 20px;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--gold); /* Added border color */
 }

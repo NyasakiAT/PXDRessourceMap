@@ -42,6 +42,14 @@ class RessourceCategoryViewSet(viewsets.ModelViewSet):
     serializer_class = RessourceCategorySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    def get_serializer_context(self):
+        """
+        Extra context provided to the serializer class.
+        """
+        context = super(RessourceCategoryViewSet, self).get_serializer_context()
+        context['include_ressources'] = True
+        return context
+
 class MapViewSet(viewsets.ModelViewSet):
     queryset = Map.objects.all()
     serializer_class = MapSerializer
