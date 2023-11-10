@@ -68,7 +68,7 @@ class RessourceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ressource
-        fields = ['id', 'name', 'icon', 'image', 'description', 'obtained_from', 'stack_size', 'ressource_category', 'used_in']
+        fields = ['id', 'name', 'icon', 'image', 'description', 'obtained_from', 'stack_size', 'ressource_category', 'used_in', 'is_crafted']
 
     def get_ressource_category(self, obj):
         serializer = RessourceCategorySerializer(obj.ressource_category, context={'include_ressources': False})

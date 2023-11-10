@@ -32,6 +32,7 @@ class Ressource(models.Model):
     stack_size = models.PositiveIntegerField()
     ressource_category = models.ForeignKey('RessourceCategory', related_name='ressources', on_delete=models.CASCADE)
     used_in = models.ManyToManyField('Recipe', through='RecipeIngredient')
+    is_crafted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
