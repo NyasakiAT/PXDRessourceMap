@@ -25,12 +25,12 @@ class RessourceCategory(models.Model):
 
 class Ressource(models.Model):
     name = models.CharField(max_length=60)
-    icon = models.ImageField()
+    icon = models.ImageField(null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     obtained_from = models.TextField(null=True, blank=True)
     stack_size = models.PositiveIntegerField()
-    ressource_category = models.ForeignKey('RessourceCategory', related_name='ressources', on_delete=models.CASCADE)
+    ressource_category = models.ForeignKey('RessourceCategory', related_name='ressources', on_delete=models.CASCADE, null=True, blank=True)
     used_in = models.ManyToManyField('Recipe', through='RecipeIngredient')
     is_crafted = models.BooleanField(default=False)
 

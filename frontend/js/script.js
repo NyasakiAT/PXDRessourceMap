@@ -1,6 +1,7 @@
 const map_url = 'http://127.0.0.1:8000/api/maps/';
 const res_type_url = 'http://127.0.0.1:8000/api/ressources/';
-const ressources_url = 'http://127.0.0.1:8000/api/maps/<map_id>/nodes/';
+const ressource_nodes_url = 'http://127.0.0.1:8000/api/maps/<map_id>/nodes/';
+const ressources_url = 'http://127.0.0.1:8000/api/ressources/';
 
 window.L_DISABLE_3D = true;
 
@@ -33,8 +34,8 @@ addButton.addEventListener('click', function () {
   const postData = {
     x: selected_pos[0], // Set your desired x-coordinate value
     y: selected_pos[1], // Set your desired y-coordinate value
-    ressource: `http://127.0.0.1:8000/api/ressources/${ressourceSelectValue}/`, // Use the selected ressource type ID
-    map: `http://127.0.0.1:8000/api/maps/${mapSelectValue}/`,
+    ressource: mapSelectValue, // Use the selected ressource type ID
+    map: mapSelectValue,
   };
 
   fetch('http://127.0.0.1:8000/api/ressource-nodes/', {
@@ -139,11 +140,13 @@ function populate_ressource_dropdown(select) {
       return response.json();
     })
     .then((data) => {
-      data.forEach(map => {
-        const optionElement = document.createElement('option');
-        optionElement.value = map.id;
-        optionElement.text = map.name;
-        select.add(optionElement);
+      data.forEach(ress => {
+        if(!ress.is_crafted){
+          const optionElement = document.createElement('option');
+          optionElement.value = ress.id;
+          optionElement.text = ress.name;
+          select.add(optionElement);
+        }
       });
 
       // Automatically draw the map for the first option
@@ -183,8 +186,8 @@ function draw_map(map_index, type_index = null) {
         const image = L.imageOverlay(imageUrl, bounds).addTo(map);
         map.fitBounds(bounds);
 
-        const ressource_api = ressources_url.replace("<map_id>", map_index) + ((type_index != null) ? type_index : "");;
-
+        const ressource_api = ressource_nodes_url.replace("<map_id>", map_index) + ((type_index != null) ? type_index : "");;
+        console.log(ressource_api)
         fetch(ressource_api)
           .then((response) => {
             if (!response.ok) {
@@ -194,7 +197,7 @@ function draw_map(map_index, type_index = null) {
           })
           .then((data) => {
             data.forEach(ressource_node => {
-              fetch(ressource_node.ressource)
+              fetch(ressources_url + ressource_node.ressource)
                 .then((response) => {
                   if (!response.ok) {
                     throw new Error('Network response was not ok');

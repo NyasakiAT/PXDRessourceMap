@@ -3,11 +3,11 @@ const res_cat_url = 'http://127.0.0.1:8000/api/ressource-categories/';
 
 window.onload = function () {
     RessourceCategories()
-    Ressources()
+    //Ressources()
 }
 
 
-function Ressources() {
+/*function Ressources() {
     fetch('http://127.0.0.1:8000/api/ressources/')
         .then((response) => {
             if (!response.ok) {
@@ -22,6 +22,14 @@ function Ressources() {
                     document.getElementById("wiki-ressources").innerHTML += `<a href=ressource.html?id=${element.id}>${element.name}</a>`;
             });
         });
+}*/
+
+function AddRessource(ress){
+    return `
+        <div class="ress-card">
+            <img src=${ress.image}></img>
+            <a href=ressource.html?id=${ress.id}>${ress.name}</a>
+        </div>`
 }
 
 function RessourceCategories() {
@@ -35,7 +43,14 @@ function RessourceCategories() {
         .then((data) => {
             console.log(data)
             data.forEach(element => {
-                document.getElementById("wiki-categories").innerHTML += `<a href=category.html?id=${element.id}>${element.name}</a>`;
+                document.getElementById("wiki-categories").innerHTML += `
+                <div class="ressource-cat-container">
+                    <a href=category.html?id=${element.id}><h3>${element.name}</h3></a>
+                    <div class="ressource-container">
+                        ${element.ressources.map(element => AddRessource(element)).join('')}
+                    </div>
+                </div>
+                `;
             });
         });
 }
