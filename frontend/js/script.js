@@ -1,7 +1,7 @@
-const map_url = 'http://127.0.0.1:8000/api/maps/';
-const res_type_url = 'http://127.0.0.1:8000/api/ressources/';
-const ressource_nodes_url = 'http://127.0.0.1:8000/api/maps/<map_id>/nodes/';
-const ressources_url = 'http://127.0.0.1:8000/api/ressources/';
+const map_url = 'http://195.128.103.180:8000/api/maps/';
+const res_type_url = 'http://195.128.103.180:8000/api/ressources/';
+const ressource_nodes_url = 'http://195.128.103.180:8000/api/maps/<map_id>/nodes/';
+const ressources_url = 'http://195.128.103.180:8000/api/ressources/';
 
 window.L_DISABLE_3D = true;
 
@@ -34,11 +34,11 @@ addButton.addEventListener('click', function () {
   const postData = {
     x: selected_pos[0], // Set your desired x-coordinate value
     y: selected_pos[1], // Set your desired y-coordinate value
-    ressource: mapSelectValue, // Use the selected ressource type ID
+    ressource: ressourceSelectValue, // Use the selected ressource type ID
     map: mapSelectValue,
   };
 
-  fetch('http://127.0.0.1:8000/api/ressource-nodes/', {
+  fetch('http://195.128.103.180:8000/api/ressource-nodes/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ function checkAuthStatus() {
   const token = getCookie('auth_token'); // Replace 'auth_token' with the actual cookie name
 
   // Make an API request to check the user's authorization
-  return fetch('http://127.0.0.1:8000/api/auth/isauthenticated', {
+  return fetch('http://195.128.103.180:8000/api/auth/isauthenticated', {
     method: 'GET',
     headers: {
       'Authorization': `Token ${token}`,

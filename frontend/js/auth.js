@@ -15,7 +15,7 @@ document.getElementById("close-btn").addEventListener("click", function () {
 document.getElementById("login-btn").addEventListener("click", function () {
     console.log("AUTH");
 
-    const auth_url = "http://127.0.0.1:8000/api/auth/";
+    const auth_url = "http://195.128.103.180:8000/api/auth/";
     const usernameInput = document.getElementById("username-input");
     const passwordInput = document.getElementById("password-input");
 

@@ -14,12 +14,12 @@ services:
 
   migrate:
     build:
-      context: ./Backend
+      context: ./backend
       dockerfile: Dockerfile.migrate
     networks:
       - lan
     volumes:
-      - ./Backend:/backend
+      - ./backend:/backend
     environment:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
@@ -29,12 +29,12 @@ services:
 
   backend:
     build:
-      context: ./Backend
+      context: ./backend
     networks:
       - lan
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./Backend:/backend
+      - ./backend:/backend
     ports:
       - "8000:8000"
     environment:

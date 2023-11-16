@@ -4,7 +4,7 @@ const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
 console.log("ID: " + id);
 
-const ressourceUrl = "http://127.0.0.1:8000/api/ressources/"
+const ressourceUrl = "http://195.128.103.180:8000/api/ressources/"
 
 function AddIngredient(ingredient) {
     return `<tr><td>${ingredient.amount}</td><td>${ingredient.ingredient.name}</td></tr>`

@@ -1,5 +1,5 @@
 backend/env
 data
 __pycache__
-media/*
+backend/media/*
 _frontend

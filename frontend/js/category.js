@@ -4,7 +4,7 @@ const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
 console.log("ID: " + id);
 
-const ressourceUrl = "http://127.0.0.1:8000/api/ressource-categories/"
+const ressourceUrl = "http://195.128.103.180:8000/api/ressource-categories/"
 
 function AddCategoryDetails(cat) {
     document.title = cat.name

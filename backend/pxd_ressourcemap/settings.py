@@ -28,6 +28,7 @@ CACHES = {
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
+    "http://195.128.103.180",
     "null",
     "http://127.0.0.1",
     "http://frontend",
